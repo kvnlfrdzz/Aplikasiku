@@ -1,0 +1,34 @@
+<?php
+
+use App\Http\Controllers\ProfileController;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
+use App\Models\Category;
+use App\Http\Controllers\CategoryController;
+
+Route::get('/', function () {
+    return view('welcome');
+});
+
+Route::get('/dashboard', function () {
+    $categories = Category::with('posts')->get();
+    return view('dashboard', compact('categories'));
+})->middleware(['auth'])->name('dashboard'); // 🔥 TAMBAH name
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::resource('/posts', PostController::class);
+}); 
+
+Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
+Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
+
+Route::resource('categories', CategoryController::class)->middleware('auth');
+
+require __DIR__.'/auth.php';
+
