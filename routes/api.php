@@ -5,7 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PostController;
 use App\Http\Controllers\Api\CategoryController;
 
-Route::apiResource('posts', PostController::class);
+Route::apiResource('posts', PostController::class)->names('api.posts');
+
 Route::get('/categories', [CategoryController::class, 'index']);
 Route::get('/posts/search/{q}', [PostController::class, 'search']);
 
