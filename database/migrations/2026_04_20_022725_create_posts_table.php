@@ -17,7 +17,6 @@ public function up(): void
     $table->string('title');
     $table->text('content');
     $table->timestamps();
-    $table->foreignId('category_id')->constrained()->onDelete('cascade');
   });
 }
 
