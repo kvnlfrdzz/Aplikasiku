@@ -12,8 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
-        // Ini kuncinya biar HTTPS di Railway kedeteksi aman dan gak muncul peringatan lagi
-        $middleware->trustProxies(at: '*');
+    $middleware->trustProxies(at: '*');
+    
+    // TAMBAHKAN BARIS INI UNTUK IZININ GITHUB PAGES
+    $middleware->validateCsrfTokens(except: [
+        'api/*',
+    ]);
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //
