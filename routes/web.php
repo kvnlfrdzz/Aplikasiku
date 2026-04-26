@@ -13,7 +13,7 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     $categories = Category::with('posts')->get();
     return view('dashboard', compact('categories'));
-})->middleware(['auth'])->name('dashboard'); // 🔥 TAMBAH name
+})->middleware(['auth'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -23,12 +23,7 @@ Route::middleware('auth')->group(function () {
 
 Route::middleware(['auth'])->group(function () {
     Route::resource('/posts', PostController::class);
-}); 
-
-Route::post('/categories', [CategoryController::class, 'store'])->name('categories.store');
-Route::delete('/categories/{id}', [CategoryController::class, 'destroy'])->name('categories.destroy');
-
-Route::resource('categories', CategoryController::class)->middleware('auth');
+    Route::resource('categories', CategoryController::class);
+});
 
 require __DIR__.'/auth.php';
-
